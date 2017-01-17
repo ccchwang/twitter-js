@@ -1,8 +1,54 @@
-<h1>{{ title }}</h1>
-<p>This is a bare-bones template.</p>
-<ul>
-{% for person in people %}
-  <li>{{ person.name }}</li>
-{% endfor %}
-</ul>
+{% extends "layout.html" %}
+<!--this is what we're actually serving up-->
 
+{% block content %}
+<!--puts content between lines 3-24 into the layout.html at another %blockcontent% and renders it as single file. below is a partial view-->
+
+
+  <div class="page-header">
+    <h1><a href="http://localhost:3000/">Welcome to Twitter.js!</a></h1>
+  </div>
+
+  {% if showForm %}
+  <!--when this form submits, it will send HTTP request with POST method. Message body of request will contain form info-->
+  <form action="/tweets" method="POST">
+    <label for="name_field">Name:</label>
+      {% if homePage %}
+    <input name="name" type="text" id="name_field"/>
+      {% endif %}
+
+      {% set tweet = tweets[0] %}
+      {% if showUser %}
+    <input name="name" type="text" id="name_field" value='{{tweet.name}}'/>
+      {% endif %}
+
+    <label for="text_field">Text:</label>
+    <input name="text" type="text" id="text_field" style="width: 350px;" />
+
+    <input type="submit" value="Submit" />
+  </form>
+
+
+{% endif %}
+<BR><BR>
+  <div class="row">
+    <div class="col-md-3">
+      <img src="https://pbs.twimg.com/profile_images/2450268678/olxp11gnt09no2y2wpsh_normal.jpeg"><br>
+      <b>Your Name</b><br>
+      100 followers
+    </div>
+    <div class="col-md-9">
+
+      <!-- display tweets here -->
+      {% for tweet in tweets %}
+        <b><a href="/users/{{tweet.name}}">{{tweet.name}}</a></b>
+        <br>
+        {{tweet.content}}<br>
+        <a href="/tweets/{{tweet.id}}">Tweet #{{tweet.id}}</a>
+        <br><br>
+      {% endfor %}
+
+    </div>
+  </div>
+
+{% endblock %}

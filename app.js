@@ -1,36 +1,39 @@
 const express = require('express');
 const chalk = require('chalk')
 const nunjucks = require('nunjucks')
+const tweetBank = require('./tweetBank.js')
+const routes = require('./routes')
+const bodyParser = require('body-parser')
 const app = express();
-
 
 //start basic HTTP server and listens on port 3000 for connections
 app.listen(3000, function(){
     console.log('server listening')
 })
 
-//middleware logging each request to server
+
+//** MIDDLEWARE **//
+
+//for POST requests to server by client, we want to be able to parse their message body
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+//logging each server request to terminal
 app.use('/', function(req, res, next){
     console.log(chalk.magenta(req.method, req.path));
     res.on('finish', () => logStatus(res));
     next();
 })
+//requires all server requests to any page to go through 'routes' (which is where we have all routing logic)
+app.use('/', routes)
 
+//allows each server request to access everything in public folder. So when HTML loads with the link that will request stylesheets/style.css, it will be routed by this middleware to that file, without us having to write a GET for that specific file.
+app.use(express.static('public'))
+
+
+//** LOGGING STATUS OF REQUESTS IN OUR TERMINAL **//
 function logStatus(res) {
     console.log(chalk.magenta(res.statusCode));
 }
-
-app.use('/special', function(req, res, next){
-    res.send('special!')
-    next();
-})
-
-
-app.get('/', function(req, res, next){
-    const people = [{name: 'Grace'}, {name: 'Hopper'}, {name: 'Daughter'}];
-    nunjucks.render('index.html', people, function (err, output) {});
-    res.render( 'index', {title: 'All About Me', people: people} );
-})
 
 
 //NUNJUCKS HTML RENDERER
