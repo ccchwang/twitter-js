@@ -1,7 +1,6 @@
 const express = require('express');
 const chalk = require('chalk')
 const nunjucks = require('nunjucks')
-const tweetBank = require('./tweetBank.js')
 const routes = require('./routes')
 const bodyParser = require('body-parser')
 const app = express();

@@ -1,8 +1,8 @@
+const tweetBank = require('../tweetBank');
 const express = require('express');
 const path = require('path');
 const router = express.Router(); //special entity to function as router
 // could use one line instead: const router = require('express').Router();
-const tweetBank = require('../tweetBank');
 
 //how to respond to client requests to root path
 router.get('/', function (req, res) {
