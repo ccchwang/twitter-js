@@ -19,7 +19,7 @@
 
       {% set tweet = tweets[0] %}
       {% if showUser %}
-    <input name="name" type="text" id="name_field" value='{{tweet.name}}'/>
+    <input name="name" type="text" id="name_field" value='{{tweet.user.name}}'/>
       {% endif %}
 
     <label for="text_field">Text:</label>
@@ -41,7 +41,7 @@
 
       <!-- display tweets here -->
       {% for tweet in tweets %}
-        <b><a href="/users/{{tweet.name}}">{{tweet.name}}</a></b>
+        <b><a href="/users/{{tweet.user.name}}">{{tweet.user.name}}</a></b>
         <br>
         {{tweet.content}}<br>
         <a href="/tweets/{{tweet.id}}">Tweet #{{tweet.id}}</a>
